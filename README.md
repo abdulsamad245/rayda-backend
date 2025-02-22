@@ -65,9 +65,9 @@ This API provides endpoints for managing tasks and user authentication.
 ### Task Management Endpoints
 - **GET** `/api/v1/tasks` - Get all tasks for the authenticated user  
 - **POST** `/api/v1/tasks` - Create a new task  
-- **GET** `/api/v1/tasks/{task}` - Get a specific task  
-- **PUT** `/api/v1/tasks/{task}` - Update a specific task  
-- **DELETE** `/api/v1/tasks/{task}` - Delete a specific task  
+- **GET** `/api/v1/tasks/{taskId}` - Get a specific task  
+- **PUT** `/api/v1/tasks/{taskId}` - Update a specific task  
+- **DELETE** `/api/v1/tasks/{taskId}` - Delete a specific task  
 
 All task-related endpoints require authentication using a **Bearer Token**.
 
@@ -84,8 +84,8 @@ Content-Type: application/json
 ```
 ```json
 {
-    "name": "John Doe",
-    "email": "john.doe@example.com",
+    "name": "Adamu Kwame",
+    "email": "adamu.kwame@example.com",
     "password": "SecureP@ssw0rd!",
     "password_confirmation": "SecureP@ssw0rd!"
 }
@@ -97,7 +97,11 @@ Content-Type: application/json
     "success": true,
     "message": "User registered successfully",
     "data": {
-        "token": "your-auth-token"
+        "id": 20,
+        "name": "Adamu Kwame",
+        "email": "adamu.kwame@example.com",
+        "created_at": "2025-02-22 23:20:42",
+        "updated_at": "2025-02-22 23:20:42"
     }
 }
 ```
@@ -113,7 +117,7 @@ Content-Type: application/json
 ```
 ```json
 {
-    "email": "john.doe@example.com",
+    "email": "adamu.kwame@example.com",
     "password": "SecureP@ssw0rd!"
 }
 ```
@@ -124,7 +128,14 @@ Content-Type: application/json
     "success": true,
     "message": "User logged in successfully",
     "data": {
-        "token": "your-auth-token"
+        "token": "36|upTnxXscSU5yP6CGXHyRtuFqnRDxckkU3MZFx3tGc461fd88",
+        "user": {
+            "id": 20,
+            "name": "Adamu Kwame",
+            "email": "adamu.kwame@example.com",
+            "created_at": "2025-02-22 23:20:42",
+            "updated_at": "2025-02-22 23:20:42"
+        }
     }
 }
 ```
@@ -225,11 +236,11 @@ Authorization: Bearer your-auth-token
 
 ---
 
-### 6. Mark Task as Completed
+### 6. Get Task by ID
 
 **Request:**
 ```http
-POST /api/v1/tasks/1/complete
+GET /api/v1/tasks/1
 Authorization: Bearer your-auth-token
 ```
 
@@ -237,23 +248,79 @@ Authorization: Bearer your-auth-token
 ```json
 {
     "success": true,
-    "message": "Task marked as completed",
+    "message": "Task retrieved successfully",
     "data": {
         "id": 1,
         "title": "Complete the project",
         "description": "Work on the Laravel backend for the task management system.",
-        "status": "completed",
+        "status": "pending",
         "due_date": "2025-03-01T10:00:00Z",
-        "completed": true,
+        "completed": false,
         "created_at": "2025-02-21T12:00:00Z",
-        "updated_at": "2025-02-21T12:10:00Z"
+        "updated_at": "2025-02-21T12:00:00Z"
     }
 }
 ```
 
 ---
 
-### 7. Error Response Example
+### 7. Update Task
+
+**Request:**
+```http
+PUT /api/v1/tasks/1
+Authorization: Bearer your-auth-token
+Content-Type: application/json
+```
+```json
+{
+    "title": "Complete the project (Updated)",
+    "description": "Work on the Laravel backend for the task management system. (Updated)",
+    "status": "in_progress",
+    "due_date": "2025-03-05T10:00:00Z"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+    "success": true,
+    "message": "Task updated successfully",
+    "data": {
+        "id": 1,
+        "title": "Complete the project (Updated)",
+        "description": "Work on the Laravel backend for the task management system. (Updated)",
+        "status": "in_progress",
+        "due_date": "2025-03-05T10:00:00Z",
+        "completed": false,
+        "created_at": "2025-02-21T12:00:00Z",
+        "updated_at": "2025-02-21T12:05:00Z"
+    }
+}
+```
+
+---
+
+### 8. Delete Task
+
+**Request:**
+```http
+DELETE /api/v1/tasks/1
+Authorization: Bearer your-auth-token
+```
+
+**Response (200 OK):**
+```json
+{
+    "success": true,
+    "message": "Task deleted successfully",
+    "data": null
+}
+```
+
+---
+
+### 9. Error Response Example
 
 If a user tries to create a task without a title:
 
@@ -298,4 +365,3 @@ To ensure your frontend application can communicate with the API, set the `NEXT_
 ```env
 NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api/v1
 ```
-
