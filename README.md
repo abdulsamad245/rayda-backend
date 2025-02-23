@@ -4,10 +4,12 @@ This API provides endpoints for managing tasks and user authentication.
 
 ## Setup Instructions
 
+### Local Development (Without Docker)
+
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/task-management-api.git
-   cd task-management-api
+   git clone https://github.com/abdulsamad245/rayda-backend.git
+   cd rayda-backend
    ```
 
 2. Install dependencies:
@@ -46,6 +48,64 @@ This API provides endpoints for managing tasks and user authentication.
    php artisan serve
    ```
    The server will start at `http://127.0.0.1:8000`.
+
+---
+
+### Docker Setup Instructions
+
+To set up the project using Docker, follow these steps:
+
+1. **Clone the repository** (if not already done):
+   ```sh
+   git clone https://github.com/abdulsamad245/rayda-backend.git
+   cd rayda-backend
+   ```
+
+2. **Build and start the containers**:
+   - For **development**:
+     ```sh
+     make fresh
+     ```
+   - For **production**:
+     ```sh
+     make fresh-prod
+     ```
+
+3. **Access the PHP container**:
+   To SSH into the PHP container, run:
+   ```sh
+   make ssh
+   ```
+
+4. **Run Composer Install**:
+   Install dependencies inside the PHP container:
+   ```sh
+   make install
+   ```
+
+5. **Run Migrations**:
+   Apply database migrations:
+   ```sh
+   make migrate
+   ```
+
+6. **Run Tests**:
+   Execute the test suite:
+   ```sh
+   make tests
+   ```
+
+7. **Stop the Containers**:
+   To stop all running containers:
+   ```sh
+   make stop
+   ```
+
+8. **Destroy the Containers**:
+   To stop and remove all containers:
+   ```sh
+   make destroy
+   ```
 
 ---
 
@@ -361,7 +421,7 @@ The server will start at `http://127.0.0.1:8000`.
 
 ## Setting `NEXT_PUBLIC_API_URL`
 
-To ensure your frontend application can communicate with the API, set the `NEXT_PUBLIC_API_URL` environment variable in your `.env` file:
+To ensure the frontend application can communicate with the API, set the `NEXT_PUBLIC_API_URL` environment variable in the `.env.local` file:
 ```env
 NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api/v1
 ```
