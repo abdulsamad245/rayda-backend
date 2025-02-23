@@ -45,8 +45,20 @@ class TaskService
 
     public function updateTask(Task $task, array $data)
     {
+        $exists = Task::where('title', $data['title'])
+            ->where('user_id', Auth::id())
+            ->exists();
+
+        if ($exists) {
+            throw ValidationException::withMessages([
+                'title' => 'A task with this title already exists'
+            ]);
+
+
+        }
         $task->update($data);
         return $task;
+
     }
 
     public function deleteTask(Task $task)

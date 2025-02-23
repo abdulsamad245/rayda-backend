@@ -82,7 +82,7 @@ class TaskController extends Controller
             return ApiResponse::success('Tasks retrieved successfully', $tasks);
         } catch (\Exception $e) {
             Log::error('Error retrieving tasks: ' . $e->getMessage());
-            return ApiResponse::error('Error retrieving tasks', null, 500);
+            return ApiResponse::error('Error retrieving tasks', $e->getMessage(), 500);
         }
     }
 
@@ -109,7 +109,7 @@ class TaskController extends Controller
             return ApiResponse::success('Task created successfully', new TaskResource($task), 201);
         } catch (\Exception $e) {
             Log::error('Error creating task: ' . $e->getMessage());
-            return ApiResponse::error('Error creating task', null, 500);
+            return ApiResponse::error('Error creating task', $e->getMessage(), 500);
         }
     }
 
@@ -167,7 +167,7 @@ class TaskController extends Controller
             return ApiResponse::success('Task updated successfully', new TaskResource($updatedTask));
         } catch (\Exception $e) {
             Log::error('Error updating task: ' . $e->getMessage());
-            return ApiResponse::error('Error updating task', null, 500);
+            return ApiResponse::error('Error updating task', $e->getMessage(), 500);
         }
     }
 
@@ -194,7 +194,7 @@ class TaskController extends Controller
             return ApiResponse::success('Task deleted successfully');
         } catch (\Exception $e) {
             Log::error('Error deleting task: ' . $e->getMessage());
-            return ApiResponse::error('Error deleting task', null, 500);
+            return ApiResponse::error('Error deleting task', $e->getMessage(), 500);
         }
     }
 
